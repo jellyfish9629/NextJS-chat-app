@@ -14,12 +14,4 @@ export function useChannel(channelName, callbackOnMessage) {
         channel.unsubscribe();
     }
 
-    const useEffectHook = () => {
-        onMount();
-        return () => { onUnmount(); };
-    };
-
-    useEffect(useEffectHook);
-
-    return [channel, ably];
 }
