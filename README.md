@@ -422,34 +422,3 @@ and the accompanying css would look like this:
 }
 ```
 This app is built with [CSS Grid](https://css-tricks.com/snippets/css/complete-guide-grid/) to create the app layout, you are of course welcome to use the CSS provided with this project or to write your own or use a framework.
-
-# Hosting on Vercel
-
-We're using `Vercel` as our development server and build pipeline.
-
-> The easiest way to deploy Next.js to production is to use the Vercel platform from the creators of Next.js. Vercel is an all-in-one platform with Global CDN supporting static & Jamstack deployment and Serverless Functions.
-<cite>-- [The Next.js documentation](https://nextjs.org/docs/deployment)</cive>
-
-In order to deploy your new chat app to Vercel you'll need to:
-
-1. Create a [GitHub account](https://github.com/) (if you don't already have one)
-2. [Push your app to a GitHub repository](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/creating-a-new-repository)
-3. [Create a Vercel account](https://vercel.com/signup)
-4. Create a new Vercel app and import your app from your GitHub repository. (This will require you to authorise Vercel to use your GitHub account)
-5. Add your `ABLY_API_KEY` as an environment variable
-6. Watch your app deploy
-7. Visit the newly created URL in your browser!
-
-# Make it your own
-
-There are a few ways that this example could be extended:
-
-## Add message history
-
-There is currently no chat history in this demo, you'll only see messages that come in after you join the chat. You could expand this demo by using [Ably's rewind feature](https://www.ably.io/documentation/realtime/history) for up to two minutes of history for free, or with a paid account, for up to ~48 hours.
-
-## Add user names
-
-There aren't any usernames sent with the chat messages. This demo could be extended to introduce a username input box, and to add the current username to messages as they're sent.
-
-The demo uses the randomly generated Ably client Id as a unique identifier - which is how it can detect if it is "me" or "someone else" who sent the message.
