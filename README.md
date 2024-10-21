@@ -2,7 +2,7 @@
 
 This is a demo of building a chat application with [Next.js](https://nextjs.org/) using Ably as the messaging platform.
 
-You'll learn how to - 
+# You'll learn how to - 
 * Create a brand new Next.js application
 * Create an Ably account and get an API key
 * Create a Next.js Vercel Serverless API
