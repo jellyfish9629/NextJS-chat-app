@@ -2,12 +2,13 @@
 
 This is a demo of building a chat application with [Next.js](https://nextjs.org/) using Ably as the messaging platform.
 
-You'll learn how to - 
-* Create a brand new Next.js application
-* Create an Ably account and get an API key
-* Create a Next.js Vercel Serverless API
-* Use React Functional components and React Hooks with Ably
-* Host your app on Vercel
+You'll learn how to -
+
+- Create a brand new Next.js application
+- Create an Ably account and get an API key
+- Create a Next.js Vercel Serverless API
+- Use React Functional components and React Hooks with Ably
+- Host your app on Vercel
 
 [Next.js](https://nextjs.org/) is a React framework from [Vercel](https://vercel.com/). It is used to build static web applications with server side rendering, serverless functions and seamless hosting. It's a framework that takes the React knowledge you already have, and puts some structure and conventions in place.
 
@@ -26,7 +27,7 @@ Vercel allows users to deploy [Serverless Functions](https://vercel.com/docs/ser
 # What are we going to build?
 
 ![The UI of the chat app we'll build. It is a window with speech bubbles for text.](https://cdn.glitch.com/0cb30add-c9ef-4c00-983c-e12deb0d4080%2Fchatapp.png?v=1612279601157)  
-*The UI of the app we'll build with this walkthrough*  
+_The UI of the app we'll build with this walkthrough_
 
 We'll build a realtime chat app that runs in the browser. It will be built upon the Next.js [create-next-app](https://nextjs.org/docs/api-reference/create-next-app) template, it will contain a React component which will use Ably to send and receive messages. We'll also write a Next.js serverless function which will be used to connect to Ably.
 
@@ -34,9 +35,9 @@ We'll build a realtime chat app that runs in the browser. It will be built upon 
 
 In order to build this app, you will need:
 
-* **An Ably account** for sending messages: [Create an account with Ably for free](https://www.ably.io/signup).
-* **A Vercel Account** for hosting on production: [Create an account with Vercel for free](https://vercel.com/signup).
-* **Node 12** (LTS) or greater: [Install Node](https://nodejs.org/en/).
+- **An Ably account** for sending messages: [Create an account with Ably for free](https://www.ably.io/signup).
+- **A Vercel Account** for hosting on production: [Create an account with Vercel for free](https://vercel.com/signup).
+- **Node 12** (LTS) or greater: [Install Node](https://nodejs.org/en/).
 
 ## Local dev pre-requirements
 
@@ -49,14 +50,17 @@ You'll need an API key from Ably to authenticate with the Ably Service. To get a
 Vercel provides some Next.js command line tools to help us. They don't need to be installed on your system as they're executed using `npx`.
 
 # Building the Realtime Chat App
+
 ### To create the starter app:
 
 1. In your terminal, type `npx create-next-app` to create an empty Next.js app.
 2. Create a file called `.env` in the root of the directory, this is where we'll put the project's environment variables.
 3. Add your Ably API key to the .env file:
+
 ```
 ABLY_API_KEY=your-ably-api-key:goes-here
 ```
+
 4. Navigate to your Next.js application directory and type into the console:
 
 ```bash
@@ -77,7 +81,7 @@ For local development, the Next.js tools run these functions in a Node server, s
 
 ## <a name="ablyandvercel">Writing the Serverless function to connect to Ably</a>
 
-You'll need to install the [Ably npm package](https://www.npmjs.com/package/ably/v/1.2.5-beta.1) (it's important you're running Ably 1.2.5+ for this app, for compatibility with Vercel). 
+You'll need to install the [Ably npm package](https://www.npmjs.com/package/ably/v/1.2.5-beta.1) (it's important you're running Ably 1.2.5+ for this app, for compatibility with Vercel).
 
 In the terminal, in the root of your new app run:
 
@@ -91,10 +95,12 @@ Next, create a file called `./pages/api/createTokenRequest.js` into which add th
 import Ably from "ably/promises";
 
 export default async function handler(req, res) {
-    const client = new Ably.Realtime(process.env.ABLY_API_KEY);
-    const tokenRequestData = await client.auth.createTokenRequest({ clientId: 'ably-nextjs-demo' });
-    res.status(200).json(tokenRequestData);
-};
+  const client = new Ably.Realtime(process.env.ABLY_API_KEY);
+  const tokenRequestData = await client.auth.createTokenRequest({
+    clientId: "ably-nextjs-demo",
+  });
+  res.status(200).json(tokenRequestData);
+}
 ```
 
 This serverless function uses the Ably SDK to create a `tokenRequest` with your API key. This token will be used later - it allows you to keep your "real" API key safe while using it in the Next.js app. By default, this API is configured to be available on `http://localhost:3000/api/createTokenRequest`
@@ -109,8 +115,8 @@ The topology of our Next.js app will look like this:
 ├─ .gitignore
 ├─ package-lock.json
 ├─ package.json
-├─ README.md   
-|    
+├─ README.md
+|
 ├─── components
 │     ├─ AblyChatComponent.jsx
 │     ├─ AblyChatComponent.module.css
@@ -118,18 +124,18 @@ The topology of our Next.js app will look like this:
 |
 ├─── pages
 │    ├─ index.js
-│    │   
+│    │
 │    └─── api
 │          └─ createTokenRequest.js
-│           
+│
 └─── public
 ```
 
-* `/pages/index.js` is the home page
-* `/api/createTokenRequest.js` is our Ably token authentication API
-* `/components/AblyChatComponent.jsx` is the chat component
-* `/components/AblyChatComponent.module.css` contains the styles for the chat component
-* `/components/AblyReactEffect.js` is the Ably React Hook.
+- `/pages/index.js` is the home page
+- `/api/createTokenRequest.js` is our Ably token authentication API
+- `/components/AblyChatComponent.jsx` is the chat component
+- `/components/AblyChatComponent.module.css` contains the styles for the chat component
+- `/components/AblyReactEffect.js` is the Ably React Hook.
 
 Let's walk through how this application is built.
 
@@ -140,17 +146,24 @@ Pages in `Next.js` are React components, so the `pages/index.js` home page is th
 This is the default page generated by `create-next-app`, we'll add our own component to this - an `AblyChatComponent`:
 
 ```jsx
-import Head from 'next/head'
-import dynamic from 'next/dynamic'
+import Head from "next/head";
+import dynamic from "next/dynamic";
 
-const AblyChatComponent = dynamic(() => import('../components/AblyChatComponent'), { ssr: false });
+const AblyChatComponent = dynamic(
+  () => import("../components/AblyChatComponent"),
+  { ssr: false }
+);
 
 export default function Home() {
   return (
     <div className="container">
       <Head>
         <title>Create Next App</title>
-        <link rel="icon" href="https://static.ably.dev/motif-red.svg?nextjs-vercel" type="image/svg+xml" />
+        <link
+          rel="icon"
+          href="https://static.ably.dev/motif-red.svg?nextjs-vercel"
+          type="image/svg+xml"
+        />
       </Head>
 
       <main>
@@ -177,15 +190,17 @@ export default function Home() {
         ...        
       `}</style>
     </div>
-  )
+  );
 }
-
 ```
 
 You'll notice that it doesn't look like a regular import - we're including it like this:
 
 ```jsx
-const AblyChatComponent = dynamic(() => import('../components/AblyChatComponent'), { ssr: false });
+const AblyChatComponent = dynamic(
+  () => import("../components/AblyChatComponent"),
+  { ssr: false }
+);
 ```
 
 before using it like any other react component:
@@ -206,9 +221,9 @@ The chat app logic is contained inside the `AblyChatComponent.jsx` component.
 Start off by referencing the imports we'll need at the top of the file:
 
 ```jsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { useChannel } from "./AblyReactEffect";
-import styles from './AblyChatComponent.module.css';
+import styles from "./AblyChatComponent.module.css";
 ```
 
 Then we'll define the function that will be exported as a React Functional component. We need to access some HTML elements in the code so we can create variables to store their references:
@@ -223,31 +238,31 @@ const AblyChatComponent = () => {
 Next, set up the state properties that we'll use in the component:
 
 ```jsx
-  const [messageText, setMessageText] = useState("");
-  const [receivedMessages, setMessages] = useState([]);
-  const messageTextIsEmpty = messageText.trim().length === 0;
+const [messageText, setMessageText] = useState("");
+const [receivedMessages, setMessages] = useState([]);
+const messageTextIsEmpty = messageText.trim().length === 0;
 ```
 
-* **messageText** will be bound to textarea element where messages can be typed
-* **receiveMessages** to the on screen chat history
-* **messageTextIsEmpty** is used to disable the send button when the textarea is empty
+- **messageText** will be bound to textarea element where messages can be typed
+- **receiveMessages** to the on screen chat history
+- **messageTextIsEmpty** is used to disable the send button when the textarea is empty
 
 Now we'll make use of the `useChannel` hook that we imported earlier.
 
 `useChannel` is a [react-hook](https://reactjs.org/docs/hooks-intro.html) style API for subscribing to messages from an Ably channel. You provide it with a channel name and a callback to be invoked whenever a message is received.
 
 ```jsx
-  const [channel, ably] = useChannel("chat-demo", (message) => {
-    // Here we're computing the state that'll be drawn into the message history
-    // We do that by slicing the last 199 messages from the receivedMessages buffer
+const [channel, ably] = useChannel("chat-demo", (message) => {
+  // Here we're computing the state that'll be drawn into the message history
+  // We do that by slicing the last 199 messages from the receivedMessages buffer
 
-    const history = receivedMessages.slice(-199);
-    setMessages([...history, message]);
+  const history = receivedMessages.slice(-199);
+  setMessages([...history, message]);
 
-    // Then finally, we take the message history, and combine it with the new message
-    // This means we'll always have up to 199 message + 1 new message, stored using the
-    // setMessages react useState hook
-  });
+  // Then finally, we take the message history, and combine it with the new message
+  // This means we'll always have up to 199 message + 1 new message, stored using the
+  // setMessages react useState hook
+});
 ```
 
 Next, we need to handle the UI interactions by defining a few functions.
@@ -256,55 +271,63 @@ First, there's `sendChatMessage`, which is responsible for publishing new messag
 It uses the Ably Channel returned by the `useChannel` hook, clears the input, and focuses on the textarea so that users can type more messages:
 
 ```jsx
-  const sendChatMessage = (messageText) => {
-    channel.publish({ name: "chat-message", data: messageText });
-    setMessageText("");
-    inputBox.focus();
-  }
+const sendChatMessage = (messageText) => {
+  channel.publish({ name: "chat-message", data: messageText });
+  setMessageText("");
+  inputBox.focus();
+};
 ```
 
 Then `handleFormSubmission`, which is triggered when the `submit` button is clicked and calls `sendChatMessage`, along with preventing a page reload:
 
 ```jsx
-  const handleFormSubmission = (event) => {
-    event.preventDefault();
-    sendChatMessage(messageText);
-  }
+const handleFormSubmission = (event) => {
+  event.preventDefault();
+  sendChatMessage(messageText);
+};
 ```
 
 In addition, the `handleKeyPress` event is wired up to make sure that if a user presses the `enter` key, while there is text in the textarea, the `sendChatMessage` function is triggered.
 
 ```jsx
-  const handleKeyPress = (event) => {
-    if (e.charCode !== 13 || messageTextIsEmpty) {
-      return;
-    }
-    sendChatMessage(messageText);
-    event.preventDefault();
+const handleKeyPress = (event) => {
+  if (e.charCode !== 13 || messageTextIsEmpty) {
+    return;
   }
+  sendChatMessage(messageText);
+  event.preventDefault();
+};
 ```
 
 Next, we need to construct the UI elements to display the messages. To do this, we will [map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) the received Ably messages into HTML span elements:
 
 ```jsx
-  const messages = receivedMessages.map((message, index) => {
-    const author = message.connectionId === ably.connection.id ? "me" : "other";
-    return <span key={index} className={styles.message} data-author={author}>{message.data}</span>;
-  });
+const messages = receivedMessages.map((message, index) => {
+  const author = message.connectionId === ably.connection.id ? "me" : "other";
+  return (
+    <span key={index} className={styles.message} data-author={author}>
+      {message.data}
+    </span>
+  );
+});
 ```
 
 In order to keep the message box scrolled to the most recent message (the one on the bottom) we'll need to add an empty div element into the message container, which will then be scrolled into view whenever the components re-renders. This is the element that we'll add to the UI later:
 
 ```jsx
-  <div ref={(element) => { messageEnd = element; }}></div>
+<div
+  ref={(element) => {
+    messageEnd = element;
+  }}
+></div>
 ```
 
 We use a `useEffect` hook along with [`scrollIntoView()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView) to scroll the message history to the bottom whenever the component renders.
 
 ```jsx
-  useEffect(() => {
-    messageEnd.scrollIntoView({ behaviour: "smooth" });
-  });
+useEffect(() => {
+  messageEnd.scrollIntoView({ behaviour: "smooth" });
+});
 ```
 
 Finally we will write the React component markup with the event handlers all bound up to `onChange` and `onKeyPress` events in JSX.
@@ -350,17 +373,17 @@ To make sure that the app handles component redrawing, mounting and unmounting c
 
 React hooks can seem a little unusual the first time you use them. A hook is a function which:
 
-* Executes the functionality that we'd expect `componentDidMount` to run
-* Returns *another* function that will be executed by the framework where `componentDidUnmount` would be called
-* Performs any other behaviour it needs to
+- Executes the functionality that we'd expect `componentDidMount` to run
+- Returns _another_ function that will be executed by the framework where `componentDidUnmount` would be called
+- Performs any other behaviour it needs to
 
 This React Hook is built upon `useEffect`. When referenced, it creates an instance of the Ably SDK (it does this only once) which is configured to use the `URL` of your Serverless function to `createTokenRequest` for authentication:
 
 ```js
 import Ably from "ably/promises";
-import { useEffect } from 'react'
+import { useEffect } from "react";
 
-const ably = new Ably.Realtime.Promise({ authUrl: '/api/createTokenRequest' });
+const ably = new Ably.Realtime.Promise({ authUrl: "/api/createTokenRequest" });
 ```
 
 Instancing the Ably library outside the scope of the component will mean it is only created once and will keep your limit usage down.
@@ -368,32 +391,36 @@ Instancing the Ably library outside the scope of the component will mean it is o
 We then need to create the function we're going to export - our Hook, so that we can use it in our components.
 We'll call it `useChannel` and it will require the channel name, and a callback as arguments. Each time `useChannel` is called, we [`get` the requested channel](https://www.ably.io/documentation/realtime/channels#obtaining-channel) from the Ably-JS SDK and prepare the hook functions.
 
-* **onMount** is the code run each time our component is rendered. Inside onMount, we will subscribe to the specified channel, triggering `callbackOnMessage` whenever a message is received. 
-* **onUnmount** is the code run whenever the component is unmounted before it is re-rendered. Here we will unsubscribe from the channel, which will stop accidental multiples of connections, again saving our account limits.
-* **useEffectHook** is a function that calls these functions correctly, returning onUnmount for React to use.
+- **onMount** is the code run each time our component is rendered. Inside onMount, we will subscribe to the specified channel, triggering `callbackOnMessage` whenever a message is received.
+- **onUnmount** is the code run whenever the component is unmounted before it is re-rendered. Here we will unsubscribe from the channel, which will stop accidental multiples of connections, again saving our account limits.
+- **useEffectHook** is a function that calls these functions correctly, returning onUnmount for React to use.
 
-The exported Hook in `AblyReactEffect.js` will look like this: 
+The exported Hook in `AblyReactEffect.js` will look like this:
 
 ```js
 export function useChannel(channelName, callbackOnMessage) {
-    const channel = ably.channels.get(channelName);
+  const channel = ably.channels.get(channelName);
 
-    const onMount = () => {
-        channel.subscribe(msg => { callbackOnMessage(msg); });
-    }
+  const onMount = () => {
+    channel.subscribe((msg) => {
+      callbackOnMessage(msg);
+    });
+  };
 
-    const onUnmount = () => {
-        channel.unsubscribe();
-    }
+  const onUnmount = () => {
+    channel.unsubscribe();
+  };
 
-    const useEffectHook = () => {
-        onMount();
-        return () => { onUnmount(); };
+  const useEffectHook = () => {
+    onMount();
+    return () => {
+      onUnmount();
     };
+  };
 
-    useEffect(useEffectHook);
+  useEffect(useEffectHook);
 
-    return [channel, ably];
+  return [channel, ably];
 }
 ```
 
@@ -405,7 +432,7 @@ You might have noticed when writing the chat component that `Next.js` has some c
 For this app, we will create a CSS file with the same name as the `.jsx` file, just with the extensions `.module.css`. We do this to keep management of the components easier, if in the future we want to delete this component it is nice and simple to also remove its CSS. Once created, it can be imported into the component:
 
 ```js
-import styles from './AblyChatComponent.module.css';
+import styles from "./AblyChatComponent.module.css";
 ```
 
 When creating a CSS class on a JSX element, we use the following syntax on the element:
@@ -421,6 +448,7 @@ and the accompanying css would look like this:
   styles: gohere;
 }
 ```
+
 This app is built with [CSS Grid](https://css-tricks.com/snippets/css/complete-guide-grid/) to create the app layout, you are of course welcome to use the CSS provided with this project or to write your own or use a framework.
 
 # Hosting on Vercel
@@ -428,7 +456,7 @@ This app is built with [CSS Grid](https://css-tricks.com/snippets/css/complete-g
 We're using `Vercel` as our development server and build pipeline.
 
 > The easiest way to deploy Next.js to production is to use the Vercel platform from the creators of Next.js. Vercel is an all-in-one platform with Global CDN supporting static & Jamstack deployment and Serverless Functions.
-<cite>-- [The Next.js documentation](https://nextjs.org/docs/deployment)</cive>
+> <cite>-- [The Next.js documentation](https://nextjs.org/docs/deployment)</cive>
 
 In order to deploy your new chat app to Vercel you'll need to:
 
@@ -447,9 +475,3 @@ There are a few ways that this example could be extended:
 ## Add message history
 
 There is currently no chat history in this demo, you'll only see messages that come in after you join the chat. You could expand this demo by using [Ably's rewind feature](https://www.ably.io/documentation/realtime/history) for up to two minutes of history for free, or with a paid account, for up to ~48 hours.
-
-## Add user names
-
-There aren't any usernames sent with the chat messages. This demo could be extended to introduce a username input box, and to add the current username to messages as they're sent.
-
-The demo uses the randomly generated Ably client Id as a unique identifier - which is how it can detect if it is "me" or "someone else" who sent the message.
